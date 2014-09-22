@@ -24,6 +24,13 @@ func AddConstant(name string, value interface{}) {
 	consts = append(consts, constant)
 }
 
+func PassString(text string) string {
+	for _, val := range consts {
+		text = strings.Replace(text, val.String(), fmt.Sprintf("%v", val.Value), -1)
+	}
+	return text
+}
+
 func PassFile(path string) (string, error) {
 	source, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -37,4 +44,8 @@ func PassFile(path string) (string, error) {
 		text = strings.Replace(text, val.String(), fmt.Sprintf("%v", val.Value), -1)
 	}
 	return text, nil
+}
+
+func ListConstants() []Constant {
+	return consts
 }

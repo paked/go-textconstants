@@ -16,3 +16,13 @@ func TestPassFile(t *testing.T) {
 		t.Fatalf("Did not receive expected, instead got", received)
 	}
 }
+
+func TestPassString(t *testing.T) {
+	expecting := "YOLO"
+	source := "=TEST="
+	receieved := PassString(source)
+
+	if expecting != receieved {
+		t.Fatalf("Did not receive expected, instead got", receieved)
+	}
+}
