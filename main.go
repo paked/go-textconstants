@@ -29,13 +29,13 @@ func PassString(text string) string {
 	Otto := otto.New()
 
 	var processed string = text
-	begin := "!"
-	end := "?"
+	begin := "<!"
+	end := "!>"
 	running := true
 	for running {
 		pointA := strings.Index(processed, begin)
 		if pointA != -1 {
-			onwards := processed[pointA+1:]
+			onwards := processed[pointA+len(begin):]
 			behind := processed[:pointA]
 			pointB := strings.Index(onwards, end)
 			if pointB != -1 {
@@ -50,14 +50,12 @@ func PassString(text string) string {
 				value, err := Otto.Get("final")
 				if err == nil {
 					finalOttoValue, _ = value.ToString()
-					// fmt.Println(finalOttoValue + "OTTO VAL")
 				}
 				if finalOttoValue != "undefined" {
 					final = finalOttoValue
 				}
-				excess := onwards[pointB+1:]
+				excess := onwards[pointB+len(end):]
 				processed = behind + final + excess
-				// fmt.Println(processed)
 			} else {
 				running = false
 			}

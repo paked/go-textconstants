@@ -17,33 +17,33 @@ func TestPassFile(t *testing.T) {
 	expecting := "YOLO NOTTEST"
 	received, _ := PassFile("sample.txt")
 	if expecting != received {
-		t.Fatalf("Did not receive expected, instead got", received)
+		t.Fatalf("Did not receive expected, instead got %v", received)
 	}
 }
 
 func TestPassString(t *testing.T) {
 	expecting := "YOLO"
-	source := "!TEST?"
+	source := "<!TEST!>"
 	receieved := PassString(source)
 
 	if expecting != receieved {
-		t.Fatalf("Did not receive expected, instead got", receieved)
+		t.Fatalf("Did not receive expected, instead got %v", receieved)
 	}
 }
 
 func TestPassJavascript(t *testing.T) {
 	expecting := "3"
-	source := "!1 + 2?"
+	source := "<!1 + 2!>"
 	receieved := PassString(source)
 
 	if expecting != receieved {
-		t.Fatalf("Did not receive expected, instead got", receieved)
+		t.Fatalf("Did not receive expected, instead got %v", receieved)
 	}
 }
 
 func TestPassJavascriptAndConstant(t *testing.T) {
 	expecting := "36"
-	source := "!3 + NUM?"
+	source := "<!3 + NUM!>"
 	receieved := PassString(source)
 
 	if expecting != receieved {
