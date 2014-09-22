@@ -79,12 +79,8 @@ func PassFile(path string) (string, error) {
 		return "", err
 	}
 
-	// source = string(source)
 	text := string(source)
 
-	// for _, val := range consts {
-	// 	text = strings.Replace(text, val.String(), fmt.Sprintf("%v", val.Value), -1)
-	// }
 	return PassString(text), nil
 }
 
