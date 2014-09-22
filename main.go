@@ -29,7 +29,7 @@ func PassString(text string) string {
 	Otto := otto.New()
 
 	var processed string = text
-	begin := "|"
+	begin := "!"
 	end := "?"
 	running := true
 	for running {

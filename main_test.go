@@ -23,7 +23,7 @@ func TestPassFile(t *testing.T) {
 
 func TestPassString(t *testing.T) {
 	expecting := "YOLO"
-	source := "|TEST?"
+	source := "!TEST?"
 	receieved := PassString(source)
 
 	if expecting != receieved {
@@ -33,7 +33,7 @@ func TestPassString(t *testing.T) {
 
 func TestPassJavascript(t *testing.T) {
 	expecting := "3"
-	source := "|1 + 2?"
+	source := "!1 + 2?"
 	receieved := PassString(source)
 
 	if expecting != receieved {
@@ -43,7 +43,7 @@ func TestPassJavascript(t *testing.T) {
 
 func TestPassJavascriptAndConstant(t *testing.T) {
 	expecting := "36"
-	source := "|3 + NUM?"
+	source := "!3 + NUM?"
 	receieved := PassString(source)
 
 	if expecting != receieved {
