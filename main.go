@@ -2,6 +2,7 @@ package texco
 
 import (
 	"fmt"
+	"github.com/robertkrimen/otto"
 	"io/ioutil"
 	"strings"
 )
@@ -16,7 +17,7 @@ type Constant struct {
 }
 
 func (constant Constant) String() string {
-	return "=" + constant.Name + "="
+	return "" + constant.Name + ""
 }
 
 func AddConstant(name string, value interface{}) {
@@ -25,10 +26,51 @@ func AddConstant(name string, value interface{}) {
 }
 
 func PassString(text string) string {
+	Otto := otto.New()
+
+	var processed string = text
+	begin := "|"
+	end := "?"
+	running := true
+	for running {
+		pointA := strings.Index(processed, begin)
+		if pointA != -1 {
+			onwards := processed[pointA+1:]
+			behind := processed[:pointA]
+			pointB := strings.Index(onwards, end)
+			if pointB != -1 {
+				final := onwards[:pointB]
+				//REPLACE CONSTANTS
+				for _, val := range consts {
+					final = strings.Replace(final, val.String(), fmt.Sprintf("%v", val.Value), -1)
+				}
+				//Run javascript
+				finalOttoValue := ""
+				Otto.Run("final = " + final)
+				value, err := Otto.Get("final")
+				if err == nil {
+					finalOttoValue, _ = value.ToString()
+					// fmt.Println(finalOttoValue + "OTTO VAL")
+				}
+				if finalOttoValue != "undefined" {
+					final = finalOttoValue
+				}
+				excess := onwards[pointB+1:]
+				processed = behind + final + excess
+				// fmt.Println(processed)
+			} else {
+				running = false
+			}
+		} else {
+			running = false
+		}
+
+	}
+
 	for _, val := range consts {
 		text = strings.Replace(text, val.String(), fmt.Sprintf("%v", val.Value), -1)
 	}
-	return text
+	return processed
 }
 
 func PassFile(path string) (string, error) {
@@ -40,10 +82,10 @@ func PassFile(path string) (string, error) {
 	// source = string(source)
 	text := string(source)
 
-	for _, val := range consts {
-		text = strings.Replace(text, val.String(), fmt.Sprintf("%v", val.Value), -1)
-	}
-	return text, nil
+	// for _, val := range consts {
+	// 	text = strings.Replace(text, val.String(), fmt.Sprintf("%v", val.Value), -1)
+	// }
+	return PassString(text), nil
 }
 
 func ListConstants() []Constant {
